@@ -29,8 +29,9 @@ public class ProceduralMapGenerator : MonoBehaviour
         _bigWallRight = new GameObject().transform; _bigWallRight.name = "BigWallRight"; _bigWallRight.parent = _sideParent;
         for (int i = 0; i < _wallsNumber; i++)
         {
-            Instantiate(_block, new Vector2(Camera.main.orthographicSize/2, _currentWallHeight), Quaternion.identity, _bigWallRight);
-            Instantiate(_block, new Vector2(-Camera.main.orthographicSize/2, _currentWallHeight), Quaternion.identity, _bigWallLeft);
+            float xOffset = 0.45f;
+            Instantiate(_block, new Vector2(Camera.main.orthographicSize/2 - xOffset, _currentWallHeight), Quaternion.identity, _bigWallRight);
+            Instantiate(_block, new Vector2(-Camera.main.orthographicSize/2 + xOffset, _currentWallHeight), Quaternion.identity, _bigWallLeft);
             _currentWallHeight -= 1;
         }
     }
