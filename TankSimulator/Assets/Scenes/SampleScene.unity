@@ -1436,7 +1436,7 @@ GameObject:
   - component: {fileID: 2043219706}
   - component: {fileID: 2043219705}
   m_Layer: 0
-  m_Name: Ads
+  m_Name: AdsManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1469,8 +1469,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f0525bb00935b940a37f3af5a67e61d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitId: 
-  iosAdUnitId: 
+  androidAdUnitId: Rewarded_Android
+  iosAdUnitId: Rewarded_iOS
 --- !u!114 &2043219706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1483,8 +1483,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875c88b5ffdd64d4895f0a1ce3c8e4fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitId: 
-  iosAdUnitId: 
+  androidAdUnitId: Interstitial_Android
+  iosAdUnitId: Interstitial_iOS
 --- !u!114 &2043219707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1497,8 +1497,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47a180848eef13a469206e3e6134abe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitId: 
-  iosAdUnitId: 
+  androidAdUnitId: Banner_Android
+  iosAdUnitId: Banner_iOS
 --- !u!114 &2043219708
 MonoBehaviour:
   m_ObjectHideFlags: 0
