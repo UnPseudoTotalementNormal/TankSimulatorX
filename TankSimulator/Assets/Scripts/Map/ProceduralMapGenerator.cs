@@ -1,4 +1,5 @@
 using UnityEngine;
+using static Unity.Collections.AllocatorManager;
 
 public class ProceduralMapGenerator : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class ProceduralMapGenerator : MonoBehaviour
     private void Start()
     {
         _seed = Random.Range(-100000, 1000000);
-        _currentWallHeight = _currentWallHeight / 2;
+        _currentWallHeight = _wallsNumber / 2;
         GenerateSideWalls();
         GeneratePlatforms();
     }
@@ -28,21 +29,26 @@ public class ProceduralMapGenerator : MonoBehaviour
         _bigWallRight = new GameObject().transform; _bigWallRight.name = "BigWallRight"; _bigWallRight.parent = _sideParent;
         for (int i = 0; i < _wallsNumber; i++)
         {
-            Instantiate(_block, new Vector2(Camera.main.orthographicSize/2, _currentWallHeight), Quaternion.identity, _bigWallRight);
-            Instantiate(_block, new Vector2(-Camera.main.orthographicSize/2, _currentWallHeight), Quaternion.identity, _bigWallLeft);
+            float xOffset = 0.45f;
+            Instantiate(_block, new Vector2(Camera.main.orthographicSize/2 - xOffset, _currentWallHeight), Quaternion.identity, _bigWallRight);
+            Instantiate(_block, new Vector2(-Camera.main.orthographicSize/2 + xOffset, _currentWallHeight), Quaternion.identity, _bigWallLeft);
             _currentWallHeight -= 1;
         }
     }
 
     private void GeneratePlatforms()
     {
-        Vector3 spawnPos = _player.position;
-        spawnPos = new Vector3((int)(-Camera.main.orthographicSize / 2), (int)spawnPos.y, (int)spawnPos.z);
-        for (int i = 0; i < 100; i++)
+        Vector3Int spawnPos = new Vector3Int((int)(-Camera.main.orthographicSize / 2), (int)_player.position.y, (int)_player.position.z);
+        for (int i = 0; i < 1000; i++)
         {
             for (int y = 0; y < (int)Camera.main.orthographicSize; y++)
             {
-                if (Mathf.PerlinNoise(spawnPos.x/10f + _seed, spawnPos.y/10f + _seed) > 0.6f)
+                float spawnProbSub = 0;
+                float screenPercent = 0.1f;
+                float lessBlockMidPercent = 0.15f;
+                if (Mathf.Abs(spawnPos.x) < Camera.main.orthographicSize * screenPercent) spawnProbSub += lessBlockMidPercent;
+
+                if (Mathf.PerlinNoise(spawnPos.x/10f + _seed, spawnPos.y/10f + _seed) > 0.65f + spawnProbSub)
                 {
                     Instantiate(_block, spawnPos, Quaternion.identity, _platformParent);
                 }
