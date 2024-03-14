@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float _maxFallSpeed = 10;
     [SerializeField] private float _maxRecoilFallSpeed = 20;
+    [SerializeField] private float _fallSpeedDeathThreshold = 15;
+
     [SerializeField] private float _canonShootRecoil = 5;
     [SerializeField] private float _canonShootForce = 5;
 
@@ -101,5 +103,10 @@ public class PlayerController : MonoBehaviour
 
         if (_shootLightExplosion) Instantiate(_shootLightExplosion, _endCanon.position, Quaternion.identity);
         else Debug.LogWarning("No shootLightExplosion on playercontroller");
+    }
+
+    public bool IsUnderSpeedThreshold()
+    {
+        return -_rb.velocity.y < _fallSpeedDeathThreshold;
     }
 }
