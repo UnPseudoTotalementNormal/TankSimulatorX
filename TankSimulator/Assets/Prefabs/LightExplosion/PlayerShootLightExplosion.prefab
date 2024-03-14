@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6591142748341282924}
   - component: {fileID: 5332458466887077985}
   m_Layer: 1
-  m_Name: BaseLightExplosion
+  m_Name: PlayerShootLightExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,8 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _endAppearIntensity: 1
-  _endAppearRange: 5
-  _endAppearTime: 0.5
+  _endAppearRange: 2
+  _endAppearTime: 0.005
   _endAppearCurve:
     serializedVersion: 2
     m_Curve:
@@ -74,7 +74,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _endDisappearTime: 1
+  _endDisappearTime: 0.15
   _endDisappearCurve:
     serializedVersion: 2
     m_Curve:
@@ -112,8 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: -553817549, guid: a18d607b5ef4c264aab6c335019691c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Range: 5
-  Color: {r: 1, g: 1, b: 1, a: 1}
+  Range: 2.53
+  Color: {r: 1, g: 0.39301357, b: 0.040880322, a: 1}
   Intensity: 1
   SortingLayer: Default
   SortingOrder: -1000
@@ -127,7 +127,7 @@ MonoBehaviour:
     OptimizedRaycasting: 1
     CameraCulling: {fileID: 0}
     ChooseMainCamera: 0
-  position: {x: 0, y: -4.02}
+  position: {x: 0, y: 0}
   TransformIsDirty: 0
   needUpdate: 0
   ContactFilter:
