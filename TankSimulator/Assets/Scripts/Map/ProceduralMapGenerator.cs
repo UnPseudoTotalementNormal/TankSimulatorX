@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using static Unity.Collections.AllocatorManager;
 
 public class ProceduralMapGenerator : MonoBehaviour
 {
@@ -10,6 +10,8 @@ public class ProceduralMapGenerator : MonoBehaviour
     private Transform _bigWallLeft;
     private Transform _bigWallRight;
     private float _currentWallHeight = 5;
+
+    [SerializeField] private List<GameObject> _enemyList = new List<GameObject>();
 
     private float _seed;
 
@@ -53,10 +55,23 @@ public class ProceduralMapGenerator : MonoBehaviour
                 {
                     Instantiate(_block, spawnPos, Quaternion.identity, _platformParent);
                 }
+                else
+                {
+                    GenerateEnemy(spawnPos);
+                }
                 spawnPos.x += 1;
             }
             spawnPos.x = (int)(-Camera.main.orthographicSize / 2);
             spawnPos.y -= 1;
+        }
+    }
+
+    private void GenerateEnemy(Vector3Int spawnPos)
+    {
+        float randomValue = Random.Range(0f, 100f);
+        if (randomValue < 0.5f)
+        {
+            Instantiate(_enemyList[Random.Range(0, _enemyList.Count)], spawnPos, Quaternion.identity);
         }
     }
 

@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _visualFloatSpeed = 1;
 
     [SerializeField] private GameObject _deathParticles;
+    [SerializeField] private GameObject _deathLightExplosion;
 
     public UnityEvent DeathEvent;
 
@@ -16,6 +17,7 @@ public class Enemy : MonoBehaviour
     {
         DeathEvent?.Invoke();
         if (_deathParticles) Destroy(Instantiate(_deathParticles, _visuals.transform.position, Quaternion.identity), 4);
+        if (_deathLightExplosion) Instantiate(_deathLightExplosion, _visuals.transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

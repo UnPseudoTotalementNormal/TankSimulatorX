@@ -140,6 +140,7 @@ MonoBehaviour:
   _visualFloatHeight: 0.2
   _visualFloatSpeed: 5
   _deathParticles: {fileID: 0}
+  _deathLightExplosion: {fileID: 3548786152387678025, guid: 1ed67cb093ddd3d42a0341d141e948f9, type: 3}
   DeathEvent:
     m_PersistentCalls:
       m_Calls:
@@ -156,7 +157,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _triggerScript: {fileID: 248732964501210652}
-  _pushPlayerForce: 15
+  _pushPlayerForce: 5
 --- !u!114 &4782609185334986424
 MonoBehaviour:
   m_ObjectHideFlags: 0
