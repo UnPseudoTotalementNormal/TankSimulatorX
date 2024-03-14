@@ -5114,7 +5114,7 @@ PrefabInstance:
     - target: {fileID: 1278962375649610277, guid: d95da88540d2d6e44a0c4c40c581b24a, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 384906375}
+      objectReference: {fileID: 402308584}
     - target: {fileID: 1278962375649610280, guid: d95da88540d2d6e44a0c4c40c581b24a, type: 3}
       propertyPath: m_Name
       value: Light2D
@@ -5508,7 +5508,7 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8170153791668043268, guid: 0d230cc8be529a542a08cb878ab14b18, type: 3}
   m_PrefabInstance: {fileID: 1404151167}
   m_PrefabAsset: {fileID: 0}
---- !u!43 &384906375
+--- !u!43 &402308584
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5925,6 +5925,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 539160434}
+  - component: {fileID: 539160435}
   m_Layer: 0
   m_Name: BoosterEnemy
   m_TagString: Untagged
@@ -5942,13 +5943,34 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.17, y: -4.21, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 555687603}
   - {fileID: 1819221461}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &539160435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 539160433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dc77c5396dfc9943a73e38edf149e15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visuals: {fileID: 555687603}
+  _visualFloatHeight: 0.2
+  _visualFloatSpeed: 5
+  _deathParticles: {fileID: 0}
+  DeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _triggerScript: {fileID: 1819221463}
+  _pushPlayerForce: 15
 --- !u!1 &555687602
 GameObject:
   m_ObjectHideFlags: 0
@@ -6543,6 +6565,7 @@ MonoBehaviour:
   _player: {fileID: 531631089}
   _block: {fileID: 804186846959914909, guid: fb513c13d98962a45894dfa6744c4013, type: 3}
   _wallsNumber: 100
+  _levelSize: 1000
   _sideParent: {fileID: 1395410462}
   _platformParent: {fileID: 300623654}
 --- !u!1 &1495769746
@@ -6879,6 +6902,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1819221461}
   - component: {fileID: 1819221462}
+  - component: {fileID: 1819221463}
   m_Layer: 0
   m_Name: Collision
   m_TagString: Untagged
@@ -6930,12 +6954,33 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &1819221463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819221460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76abb577f993c8e439b6b68aabf4099d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  TriggerExitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  TriggerStayEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1939219204 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1278962375649610283, guid: d95da88540d2d6e44a0c4c40c581b24a, type: 3}

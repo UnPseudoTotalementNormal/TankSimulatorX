@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
     private Transform _transform;
     private Rigidbody2D _rb;
     [SerializeField] private Transform _canonPivot;
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         _transform = transform;
         _rb = GetComponent<Rigidbody2D>();
     }

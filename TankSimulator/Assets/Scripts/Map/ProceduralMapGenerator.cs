@@ -6,6 +6,7 @@ public class ProceduralMapGenerator : MonoBehaviour
     [SerializeField] private Transform _player;
     [SerializeField] private GameObject _block;
     [SerializeField] private float _wallsNumber = 10;
+    [SerializeField] private float _levelSize = 1000;
     private Transform _bigWallLeft;
     private Transform _bigWallRight;
     private float _currentWallHeight = 5;
@@ -39,7 +40,7 @@ public class ProceduralMapGenerator : MonoBehaviour
     private void GeneratePlatforms()
     {
         Vector3Int spawnPos = new Vector3Int((int)(-Camera.main.orthographicSize / 2), (int)_player.position.y, (int)_player.position.z);
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < _levelSize; i++)
         {
             for (int y = 0; y < (int)Camera.main.orthographicSize; y++)
             {
