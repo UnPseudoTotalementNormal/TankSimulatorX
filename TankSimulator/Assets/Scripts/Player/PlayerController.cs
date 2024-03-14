@@ -17,7 +17,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 _lastJoystickValue;
 
     [SerializeField] private float _maxFallSpeed = 10;
-    [SerializeField] private float _canonForce = 5;
+    [SerializeField] private float _canonShootRecoil = 5;
+    [SerializeField] private float _canonShootForce = 5;
 
 
     private void Awake()
@@ -63,16 +64,16 @@ public class PlayerController : MonoBehaviour
     private void ShootCanon()
     {
         float addedForce = 0;
-        if (Vector3.Dot(_lastJoystickValue.normalized, _rb.velocity) >= _canonForce/3)
+        if (Vector3.Dot(_lastJoystickValue.normalized, _rb.velocity) >= _canonShootRecoil/3)
         {
-            addedForce += _canonForce/2;
+            addedForce += _canonShootRecoil/2;
         }
-        _rb.AddForce(-_lastJoystickValue.normalized * (_canonForce + addedForce), ForceMode2D.Impulse);
+        _rb.AddForce(-_lastJoystickValue.normalized * (_canonShootRecoil + addedForce), ForceMode2D.Impulse);
 
         if (_bullet)
         {
             Rigidbody2D bRb = Instantiate(_bullet, _endCanon.position, _endCanon.rotation).GetComponent<Rigidbody2D>();
-            bRb.AddForce(_canonForce * _lastJoystickValue.normalized, ForceMode2D.Impulse);
+            bRb.AddForce(_canonShootForce * _lastJoystickValue.normalized, ForceMode2D.Impulse);
         }
         else Debug.LogWarning("No bullet on playercontroller");
 
