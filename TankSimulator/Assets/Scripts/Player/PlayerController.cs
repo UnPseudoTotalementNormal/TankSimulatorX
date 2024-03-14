@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _lastJoystickValue;
 
     [SerializeField] private float _maxFallSpeed = 10;
+    [SerializeField] private float _maxRecoilFallSpeed = 20;
     [SerializeField] private float _canonShootRecoil = 5;
     [SerializeField] private float _canonShootForce = 5;
 
@@ -69,14 +70,24 @@ public class PlayerController : MonoBehaviour
     private void ShootCanon()
     {
         HapticFeedback.LightFeedback();
-        
+
+        Vector3 shootDirection = -_lastJoystickValue.normalized;
 
         float addedForce = 0;
-        if (Vector3.Dot(_lastJoystickValue.normalized, _rb.velocity) >= _canonShootRecoil/3)
+        if (Vector3.Dot(-shootDirection, _rb.velocity) >= _canonShootRecoil/3)
         {
             addedForce += _canonShootRecoil/2;
         }
-        _rb.AddForce(-_lastJoystickValue.normalized * (_canonShootRecoil + addedForce), ForceMode2D.Impulse);
+
+        float downVel = Vector3.Dot(Vector3.down, _rb.velocity);
+        float nextDownVel = downVel + (Vector3.Dot(shootDirection * _canonShootRecoil, Vector3.down));
+        if (nextDownVel > _maxRecoilFallSpeed)
+        {
+            shootDirection.y = 0;
+            _rb.AddForce(Vector3.down * Mathf.Clamp(_maxRecoilFallSpeed - downVel, 0, _maxRecoilFallSpeed), ForceMode2D.Impulse);
+        }
+
+        _rb.AddForce(shootDirection * (_canonShootRecoil + addedForce), ForceMode2D.Impulse);
 
         if (_bullet)
         {
