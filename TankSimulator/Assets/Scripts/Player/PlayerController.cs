@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
     private void ShootCanon()
     {
         float addedForce = 0;
-        if (Vector3.Dot(_lastJoystickValue.normalized, _rb.velocity) >= _canonForce/2)
+        if (Vector3.Dot(_lastJoystickValue.normalized, _rb.velocity) >= _canonForce/3)
         {
             addedForce += _canonForce/2;
         }
@@ -71,7 +71,8 @@ public class PlayerController : MonoBehaviour
 
         if (_bullet)
         {
-
+            Rigidbody2D bRb = Instantiate(_bullet, _endCanon.position, _endCanon.rotation).GetComponent<Rigidbody2D>();
+            bRb.AddForce(_canonForce * _lastJoystickValue.normalized, ForceMode2D.Impulse);
         }
         else Debug.LogWarning("No bullet on playercontroller");
 
