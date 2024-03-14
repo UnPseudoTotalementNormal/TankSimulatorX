@@ -44,7 +44,7 @@ public class ProceduralMapGenerator : MonoBehaviour
         Vector3Int spawnPos = new Vector3Int((int)(-Camera.main.orthographicSize / 2), (int)_player.position.y, (int)_player.position.z);
         for (int i = 0; i < _levelSize; i++)
         {
-            for (int y = 0; y < (int)Camera.main.orthographicSize; y++)
+            for (int y = 0; y < (int)Camera.main.orthographicSize - 2; y++)
             {
                 float spawnProbSub = 0;
                 float screenPercent = 0.1f;
@@ -61,7 +61,7 @@ public class ProceduralMapGenerator : MonoBehaviour
                 }
                 spawnPos.x += 1;
             }
-            spawnPos.x = (int)(-Camera.main.orthographicSize / 2);
+            spawnPos.x = (int)(-Camera.main.orthographicSize / 2) + 1;
             spawnPos.y -= 1;
         }
     }

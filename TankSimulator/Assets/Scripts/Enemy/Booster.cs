@@ -1,4 +1,5 @@
 using UnityEngine;
+using CandyCoded.HapticFeedback;
 
 public class Booster : Enemy
 {
@@ -23,6 +24,7 @@ public class Booster : Enemy
         {
             colliderObject.GetComponent<Rigidbody2D>().AddForce(Vector3.down * _pushPlayerForce, ForceMode2D.Impulse);
             Death();
+            HapticFeedback.MediumFeedback();
         }
     }
 }

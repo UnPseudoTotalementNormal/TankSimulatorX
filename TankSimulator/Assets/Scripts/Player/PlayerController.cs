@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CandyCoded.HapticFeedback;
 
 public class PlayerController : MonoBehaviour
 {
@@ -67,6 +68,9 @@ public class PlayerController : MonoBehaviour
 
     private void ShootCanon()
     {
+        HapticFeedback.LightFeedback();
+        
+
         float addedForce = 0;
         if (Vector3.Dot(_lastJoystickValue.normalized, _rb.velocity) >= _canonShootRecoil/3)
         {
