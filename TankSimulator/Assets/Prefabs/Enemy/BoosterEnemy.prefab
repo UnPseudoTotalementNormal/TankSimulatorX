@@ -139,7 +139,7 @@ MonoBehaviour:
   _visuals: {fileID: 1488202597591429130}
   _visualFloatHeight: 0.2
   _visualFloatSpeed: 5
-  _deathParticles: {fileID: 0}
+  _deathParticles: {fileID: 8984362245554534580, guid: 743f8a5e0e97a154296227c61de459af, type: 3}
   _deathLightExplosion: {fileID: 3548786152387678025, guid: 1ed67cb093ddd3d42a0341d141e948f9, type: 3}
   DeathEvent:
     m_PersistentCalls:

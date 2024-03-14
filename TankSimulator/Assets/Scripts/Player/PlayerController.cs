@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
         }
         else Debug.LogWarning("No bullet on playercontroller");
 
-        if (_shootParticle) Destroy(Instantiate(_shootParticle, _endCanon.position, _canonPivot.rotation), 5);
+        if (_shootParticle) Destroy(Instantiate(_shootParticle, _endCanon.position, Quaternion.Inverse(_canonPivot.rotation)), 5);
         else Debug.LogWarning("No shootParticle on playercontroller");
 
         if (_shootLightExplosion) Instantiate(_shootLightExplosion, _endCanon.position, Quaternion.identity);
