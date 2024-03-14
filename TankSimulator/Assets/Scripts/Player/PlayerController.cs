@@ -8,9 +8,17 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rb;
     [SerializeField] private Transform _canonPivot;
 
+    [SerializeField] private Transform _endCanon;
+
+    [SerializeField] private GameObject _bullet;
+
+    [SerializeField] private GameObject _shootParticle;
+
     private Vector2 _lastJoystickValue;
 
-    [SerializeField] private float _canonForce = 5;
+    [SerializeField] private float _maxFallSpeed = 10;
+    [SerializeField] private float _canonShootRecoil = 5;
+    [SerializeField] private float _canonShootForce = 5;
 
 
     private void Awake()
@@ -27,7 +35,23 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (_rb.velocity.y < -_maxFallSpeed)
+        {
+            _rb.gravityScale = -0.15f;
+        }
+        else
+        {
+            _rb.gravityScale = 2;
+        }
 
+        if (InputManager.Instance.IsAiming())
+        {
+            Time.timeScale = Mathf.Lerp(Time.timeScale, 0.25f, 4 * Time.timeScale);
+        }
+        else
+        {
+            Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, 4 * Time.timeScale);
+        }
     }
 
     private void UpdateCanonOrientation()
@@ -39,6 +63,24 @@ public class PlayerController : MonoBehaviour
 
     private void ShootCanon()
     {
-        _rb.AddForce(-_lastJoystickValue.normalized * _canonForce, ForceMode2D.Impulse);
+        float addedForce = 0;
+        if (Vector3.Dot(_lastJoystickValue.normalized, _rb.velocity) >= _canonShootRecoil/3)
+        {
+            addedForce += _canonShootRecoil/2;
+        }
+        _rb.AddForce(-_lastJoystickValue.normalized * (_canonShootRecoil + addedForce), ForceMode2D.Impulse);
+
+        if (_bullet)
+        {
+            Rigidbody2D bRb = Instantiate(_bullet, _endCanon.position, _endCanon.rotation).GetComponent<Rigidbody2D>();
+            bRb.AddForce(_canonShootForce * _lastJoystickValue.normalized, ForceMode2D.Impulse);
+        }
+        else Debug.LogWarning("No bullet on playercontroller");
+
+        if (_shootParticle)
+        {
+            Destroy(Instantiate(_shootParticle, _endCanon.position, _canonPivot.rotation), 5);
+        }
+        else Debug.LogWarning("No shootParticle on playercontroller");
     }
 }
