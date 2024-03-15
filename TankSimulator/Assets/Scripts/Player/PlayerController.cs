@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Transform _transform;
     private Rigidbody2D _rb;
     [SerializeField] private Transform _canonPivot;
+    [SerializeField] private TriggerScript _downTrigger;
 
     [SerializeField] private Transform _endCanon;
 
@@ -24,6 +25,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _maxRecoilFallSpeed = 20;
     [SerializeField] private float _fallSpeedDeathThreshold = 15;
 
+    [SerializeField] private float _fallSpeedBottomDestroyThreshold = 15;
+    [SerializeField] private float _fallSpeedBottomDestroyPush = 5;
+
     [SerializeField] private float _canonShootRecoil = 5;
     [SerializeField] private float _canonShootForce = 5;
 
@@ -33,6 +37,7 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         _transform = transform;
         _rb = GetComponent<Rigidbody2D>();
+        //_downTrigger.TriggerEnterEvent.AddListener(DownTouched);
     }
 
     private void Start()
@@ -59,6 +64,31 @@ public class PlayerController : MonoBehaviour
         else
         {
             Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, 4 * Time.timeScale);
+        }
+
+        
+    }
+
+    private void FixedUpdate()
+    {
+        
+        CheckBottomDestroy();
+    }
+
+    private void CheckBottomDestroy() //if you're going fast you can destroy blocks
+    {
+        print(_rb.velocity.magnitude * Time.fixedDeltaTime);
+        foreach (RaycastHit2D hit in Physics2D.CircleCastAll(transform.position, transform.localScale.x / 2f, _rb.velocity.normalized, _rb.velocity.magnitude * Time.fixedDeltaTime * 1.5f, (1 << LayerMask.NameToLayer("Breakable"))))
+        {
+            if (_rb.velocity.y < -_fallSpeedBottomDestroyThreshold)
+            {
+                if (hit.collider.transform.parent.TryGetComponent<BreakableBlocScript>(out BreakableBlocScript breakableBlocScript))
+                {
+                    _rb.AddForce(-_rb.velocity.normalized * _fallSpeedBottomDestroyPush, ForceMode2D.Impulse);
+                    breakableBlocScript.Death(true);
+                    HapticFeedback.MediumFeedback();
+                }
+            }
         }
     }
 
@@ -107,6 +137,17 @@ public class PlayerController : MonoBehaviour
 
         if (_shootLightExplosion) Instantiate(_shootLightExplosion, _endCanon.position, Quaternion.identity);
         else Debug.LogWarning("No shootLightExplosion on playercontroller");
+    }
+
+    private void DownTouched()
+    {
+        Collider2D lastColl = _downTrigger.LastColliderEnter;
+        if (lastColl.gameObject.CompareTag("Breakable"))
+        {
+            Destroy(lastColl.transform.parent.gameObject);
+            lastColl.gameObject.SetActive(false);
+            print(_rb.velocity.y);
+        }
     }
 
     public bool IsUnderSpeedThreshold()

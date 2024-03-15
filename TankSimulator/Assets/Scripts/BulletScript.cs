@@ -6,7 +6,6 @@ public class BulletScript : MonoBehaviour
 {
     [SerializeField] private float _timeBeforeDestroy = 5;
     [SerializeField] private GameObject _deathParticle;
-    [SerializeField] private GameObject _blocBreakParticle;
     [SerializeField] private GameObject _lightExplosion;
 
     private void Awake()
@@ -19,7 +18,8 @@ public class BulletScript : MonoBehaviour
         Transform collParent = collision.transform.parent;
         if (collParent && collParent.CompareTag("Breakable"))
         {
-            if (_blocBreakParticle) Destroy(Instantiate(_blocBreakParticle, collParent.transform.position, Quaternion.identity), 5);
+            if (collParent.TryGetComponent<BreakableBlocScript>(out BreakableBlocScript breakableBlocScript))
+                breakableBlocScript.Death();
 
             Destroy(collParent.gameObject);
             Death();
