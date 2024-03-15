@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _visualFloatHeight = 1;
     [SerializeField] private float _visualFloatSpeed = 1;
 
+    [SerializeField] private GameObject _collectibleParticles;
     [SerializeField] private GameObject _deathParticles;
     [SerializeField] private GameObject _deathLightExplosion;
 
@@ -16,7 +17,8 @@ public class Enemy : MonoBehaviour
     protected private virtual void Death()
     {
         DeathEvent?.Invoke();
-        if (_deathParticles) Destroy(Instantiate(_deathParticles, _visuals.transform.position, Quaternion.identity), 4);
+        if (_collectibleParticles) Destroy(Instantiate(_collectibleParticles, _visuals.transform.position, Quaternion.identity, PlayerController.Instance.transform), 10); ;
+        if (_deathParticles) Destroy(Instantiate(_deathParticles, _visuals.transform.position, Quaternion.identity), 10);
         if (_deathLightExplosion) Instantiate(_deathLightExplosion, _visuals.transform.position, Quaternion.identity);
         Destroy(gameObject);
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 public class ProceduralMapGenerator : MonoBehaviour
 {
     [SerializeField] private Transform _player;
-    [SerializeField] private GameObject _block;
+    [SerializeField] private GameObject _sideBlock;
     [SerializeField] private GameObject _breakableBlock;
     [SerializeField] private float _wallsNumber = 10;
     [SerializeField] private float _levelSize = 1000;
@@ -37,8 +37,8 @@ public class ProceduralMapGenerator : MonoBehaviour
         for (int i = 0; i < _wallsNumber; i++)
         {
             float xOffset = 0.45f;
-            Instantiate(_block, new Vector2(Camera.main.orthographicSize/2 - xOffset, _currentWallHeight), Quaternion.identity, _bigWallRight);
-            Instantiate(_block, new Vector2(-Camera.main.orthographicSize/2 + xOffset, _currentWallHeight), Quaternion.identity, _bigWallLeft);
+            Instantiate(_sideBlock, new Vector2(Camera.main.orthographicSize/2 - xOffset, _currentWallHeight), Quaternion.identity, _bigWallRight);
+            Instantiate(_sideBlock, new Vector2(-Camera.main.orthographicSize/2 + xOffset, _currentWallHeight), Quaternion.identity, _bigWallLeft);
             _currentWallHeight -= 1;
         }
     }

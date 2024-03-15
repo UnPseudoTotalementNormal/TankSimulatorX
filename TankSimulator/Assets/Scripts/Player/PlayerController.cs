@@ -65,8 +65,6 @@ public class PlayerController : MonoBehaviour
         {
             Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, 4 * Time.timeScale);
         }
-
-        
     }
 
     private void FixedUpdate()
@@ -77,7 +75,6 @@ public class PlayerController : MonoBehaviour
 
     private void CheckBottomDestroy() //if you're going fast you can destroy blocks
     {
-        print(_rb.velocity.magnitude * Time.fixedDeltaTime);
         foreach (RaycastHit2D hit in Physics2D.CircleCastAll(transform.position, transform.localScale.x / 2f, _rb.velocity.normalized, _rb.velocity.magnitude * Time.fixedDeltaTime * 1.5f, (1 << LayerMask.NameToLayer("Breakable"))))
         {
             if (_rb.velocity.y < -_fallSpeedBottomDestroyThreshold)
@@ -122,6 +119,11 @@ public class PlayerController : MonoBehaviour
             shootDirection.y = 0;
             _rb.AddForce(Vector3.down * Mathf.Clamp(_maxRecoilFallSpeed - downVel, 0, _maxRecoilFallSpeed), ForceMode2D.Impulse);
         }
+        else if (nextDownVel < -_maxRecoilFallSpeed)
+        {
+            shootDirection.y = 0;
+            _rb.AddForce(Vector3.up * Mathf.Clamp(_maxRecoilFallSpeed + downVel, 0, _maxRecoilFallSpeed), ForceMode2D.Impulse);
+        }
 
         _rb.AddForce(shootDirection * (_canonShootRecoil + addedForce), ForceMode2D.Impulse);
 
@@ -153,5 +155,10 @@ public class PlayerController : MonoBehaviour
     public bool IsUnderSpeedThreshold()
     {
         return -_rb.velocity.y < _fallSpeedDeathThreshold;
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        print(other.name);
     }
 }
