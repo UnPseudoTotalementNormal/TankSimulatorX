@@ -5,6 +5,7 @@ public class ProceduralMapGenerator : MonoBehaviour
 {
     [SerializeField] private Transform _player;
     [SerializeField] private GameObject _block;
+    [SerializeField] private GameObject _breakableBlock;
     [SerializeField] private float _wallsNumber = 10;
     [SerializeField] private float _levelSize = 1000;
     private Transform _bigWallLeft;
@@ -60,7 +61,7 @@ public class ProceduralMapGenerator : MonoBehaviour
 
                 if (Mathf.PerlinNoise(spawnPos.x/10f + _seed, spawnPos.y/10f + _seed) > 0.65f + spawnProbSub)
                 {
-                    Instantiate(_block, spawnPos, Quaternion.identity, _platformParent);
+                    Instantiate(_breakableBlock, spawnPos, Quaternion.identity, _platformParent);
                 }
                 else
                 {

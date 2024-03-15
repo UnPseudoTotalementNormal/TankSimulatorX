@@ -160,6 +160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5779667076197833439}
+  - component: {fileID: 138937139518183903}
   - component: {fileID: 1114711781699551456}
   m_Layer: 7
   m_Name: Bullet
@@ -185,6 +186,22 @@ Transform:
   - {fileID: 3023246255205077667}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &138937139518183903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5631379623417621606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c12928779fdc124382c5d7bc86d0e63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeBeforeDestroy: 5
+  _deathParticle: {fileID: 8984362245554534580, guid: e5842625d6b0be34bbaa1da5d40a207a, type: 3}
+  _blocBreakParticle: {fileID: 8984362245554534580, guid: 641f68a2dffd12d4e96954723e879389, type: 3}
+  _lightExplosion: {fileID: 3548786152387678025, guid: f706da179e46e3d449514788e99dd929, type: 3}
 --- !u!50 &1114711781699551456
 Rigidbody2D:
   serializedVersion: 4

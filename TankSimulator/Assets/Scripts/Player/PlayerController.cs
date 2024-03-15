@@ -65,8 +65,12 @@ public class PlayerController : MonoBehaviour
     private void UpdateCanonOrientation()
     {
         Vector2 jValue = InputManager.Instance.GetJoystickValue();
-        _canonPivot.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(jValue.x, -jValue.y) * Mathf.Rad2Deg);
-        _lastJoystickValue = jValue;
+        if (jValue != Vector2.zero)
+        {
+            _canonPivot.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(jValue.x, -jValue.y) * Mathf.Rad2Deg);
+            _lastJoystickValue = jValue;
+        }
+        
     }
 
     private void ShootCanon()
