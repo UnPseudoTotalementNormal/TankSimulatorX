@@ -18,12 +18,15 @@ public class ProceduralMapGenerator : MonoBehaviour
     [SerializeField] private Transform _sideParent;
     [SerializeField] private Transform _platformParent;
 
+    private Vector3Int _lastGeneratedPos;
+
     private void Start()
     {
         _seed = Random.Range(-100000, 1000000);
         _currentWallHeight = _wallsNumber / 2;
         GenerateSideWalls();
-        GeneratePlatforms();
+        GeneratePlatforms(true);
+        CheckPlayerPosForGen();
     }
 
     private void GenerateSideWalls()
@@ -39,9 +42,13 @@ public class ProceduralMapGenerator : MonoBehaviour
         }
     }
 
-    private void GeneratePlatforms()
+    private void GeneratePlatforms(bool firstGen)
     {
         Vector3Int spawnPos = new Vector3Int((int)(-Camera.main.orthographicSize / 2), (int)_player.position.y, (int)_player.position.z);
+        if (!firstGen)
+        {
+            spawnPos = _lastGeneratedPos;
+        }
         for (int i = 0; i < _levelSize; i++)
         {
             for (int y = 0; y < (int)Camera.main.orthographicSize - 2; y++)
@@ -64,6 +71,30 @@ public class ProceduralMapGenerator : MonoBehaviour
             spawnPos.x = (int)(-Camera.main.orthographicSize / 2) + 1;
             spawnPos.y -= 1;
         }
+        _lastGeneratedPos = spawnPos;
+        CheckPlayerPosForGen();
+    }
+
+    private void DestroyFarObjects()
+    {
+        float baseCheckHeight = 2;
+        float endCheckHeight = 6;
+        Vector2 areaA = new Vector2((int)(-Camera.main.orthographicSize / 2), _lastGeneratedPos.y +(_levelSize * baseCheckHeight));
+        Vector2 areaB = new Vector2((int)(Camera.main.orthographicSize / 2), _lastGeneratedPos.y + (_levelSize * endCheckHeight));
+        foreach (Collider2D collider in Physics2D.OverlapAreaAll(areaA, areaB))
+        {
+            Destroy(collider.transform.parent.gameObject);
+        }
+    }
+
+    private void CheckPlayerPosForGen()
+    {
+        if (Mathf.Abs(_lastGeneratedPos.y - _player.transform.position.y) < _levelSize / 2)
+        {
+            GeneratePlatforms(false);
+            DestroyFarObjects();
+        }
+        Invoke("CheckPlayerPosForGen", 0.25f);
     }
 
     private void GenerateEnemy(Vector3Int spawnPos)
