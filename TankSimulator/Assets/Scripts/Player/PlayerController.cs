@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
         else Debug.LogWarning("No shootLightExplosion on playercontroller");
     }
 
-    private void DownTouched()
+    private void DownTouched() //not used
     {
         Collider2D lastColl = _downTrigger.LastColliderEnter;
         if (lastColl.gameObject.CompareTag("Breakable"))
