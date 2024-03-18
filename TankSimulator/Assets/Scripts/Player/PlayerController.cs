@@ -18,12 +18,13 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject _shootParticle;
     [SerializeField] private GameObject _shootLightExplosion;
+    [SerializeField] private GameObject _particleLightExplosion;
 
     private Vector2 _lastJoystickValue;
 
     [SerializeField] private float _maxFallSpeed = 10;
     [SerializeField] private float _maxRecoilFallSpeed = 20;
-    [SerializeField] private float _fallSpeedDeathThreshold = 15;
+    [SerializeField] private float _fallSpeedDeathThreshold = 15; public float FallSpeedDeathThreshold { get {  return _fallSpeedDeathThreshold; } }
 
     [SerializeField] private float _fallSpeedBottomDestroyThreshold = 15;
     [SerializeField] private float _fallSpeedBottomDestroyPush = 5;
@@ -69,13 +70,12 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
         CheckBottomDestroy();
     }
 
     private void CheckBottomDestroy() //if you're going fast you can destroy blocks
     {
-        foreach (RaycastHit2D hit in Physics2D.CircleCastAll(transform.position, transform.localScale.x / 2f, _rb.velocity.normalized, _rb.velocity.magnitude * Time.fixedDeltaTime * 1.5f, (1 << LayerMask.NameToLayer("Breakable"))))
+        foreach (RaycastHit2D hit in Physics2D.CircleCastAll(transform.position, transform.localScale.x / 2f, _rb.velocity.normalized, _rb.velocity.magnitude * Time.fixedDeltaTime * 1.75f, (1 << LayerMask.NameToLayer("Breakable"))))
         {
             if (_rb.velocity.y < -_fallSpeedBottomDestroyThreshold)
             {
@@ -159,6 +159,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        print(other.name);
+        GameManager.Instance.Coins += 1;
+
+        if (_particleLightExplosion) Instantiate(_particleLightExplosion, transform.position, Quaternion.identity);
     }
 }
