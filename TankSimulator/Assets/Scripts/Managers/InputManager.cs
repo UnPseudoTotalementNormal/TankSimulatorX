@@ -16,6 +16,7 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private FloatingJoystick _joystick;
     [SerializeField] private GameObject _joystickBackground;
+    [SerializeField] private FixedJoystick _menuJoystick;
 
     private void Awake()
     {
@@ -44,11 +45,25 @@ public class InputManager : MonoBehaviour
 
     public Vector2 GetJoystickValue()
     {
-        return new Vector2(_joystick.Horizontal, _joystick.Vertical);
+        if (GameManager.Instance.GameStarted)
+        {
+            return new Vector2(_joystick.Horizontal, _joystick.Vertical);
+        }
+        else
+        {
+            return new Vector2(_menuJoystick.Horizontal, _menuJoystick.Vertical);
+        }
     }
 
     public bool IsAiming()
     {
-        return _joystickBackground.activeSelf;
+        if (GameManager.Instance.GameStarted)
+        {
+            return _joystickBackground.activeSelf;
+        }
+        else
+        {
+            return _menuJoystick.Horizontal != 0 && _menuJoystick.Vertical != 0;
+        }
     }
 }

@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float _maxFallSpeed = 10;
     [SerializeField] private float _maxRecoilFallSpeed = 20;
-    [SerializeField] private float _fallSpeedDeathThreshold = 15; public float FallSpeedDeathThreshold { get {  return _fallSpeedDeathThreshold; } }
 
     [SerializeField] private float _fallSpeedBottomDestroyThreshold = 15;
     [SerializeField] private float _fallSpeedBottomDestroyPush = 5;
@@ -39,6 +38,8 @@ public class PlayerController : MonoBehaviour
         _transform = transform;
         _rb = GetComponent<Rigidbody2D>();
         //_downTrigger.TriggerEnterEvent.AddListener(DownTouched);
+
+        _rb.gravityScale = 0f;
     }
 
     private void Start()
@@ -49,22 +50,25 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (_rb.velocity.y < -_maxFallSpeed)
+        if (GameManager.Instance.IsPlaying())
         {
-            _rb.gravityScale = -0.15f;
-        }
-        else
-        {
-            _rb.gravityScale = 2;
-        }
+            if (_rb.velocity.y < -_maxFallSpeed)
+            {
+                _rb.gravityScale = -0.15f;
+            }
+            else
+            {
+                _rb.gravityScale = 2;
+            }
 
-        if (InputManager.Instance.IsAiming())
-        {
-            Time.timeScale = Mathf.Lerp(Time.timeScale, 0.25f, 4 * Time.timeScale);
-        }
-        else
-        {
-            Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, 4 * Time.timeScale);
+            if (InputManager.Instance.IsAiming())
+            {
+                Time.timeScale = Mathf.Lerp(Time.timeScale, 0.25f, 4 * Time.timeScale);
+            }
+            else
+            {
+                Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, 4 * Time.timeScale);
+            }
         }
     }
 
@@ -102,43 +106,46 @@ public class PlayerController : MonoBehaviour
 
     private void ShootCanon()
     {
-        HapticFeedback.LightFeedback();
-
-        Vector3 shootDirection = -_lastJoystickValue.normalized;
-
-        float addedForce = 0;
-        if (Vector3.Dot(-shootDirection, _rb.velocity) >= _canonShootRecoil/3)
+        if (InputManager.Instance.IsAiming() && !GameManager.Instance.GameEnded)
         {
-            addedForce += _canonShootRecoil/2;
+            HapticFeedback.LightFeedback();
+
+            Vector3 shootDirection = -_lastJoystickValue.normalized;
+
+            float addedForce = 0;
+            if (Vector3.Dot(-shootDirection, _rb.velocity) >= _canonShootRecoil / 3)
+            {
+                addedForce += _canonShootRecoil / 2;
+            }
+
+            float downVel = Vector3.Dot(Vector3.down, _rb.velocity);
+            float nextDownVel = downVel + (Vector3.Dot(shootDirection * _canonShootRecoil, Vector3.down));
+            if (nextDownVel > _maxRecoilFallSpeed)
+            {
+                shootDirection.y = 0;
+                _rb.AddForce(Vector3.down * Mathf.Clamp(_maxRecoilFallSpeed - downVel, 0, _maxRecoilFallSpeed), ForceMode2D.Impulse);
+            }
+            else if (nextDownVel < -_maxRecoilFallSpeed)
+            {
+                shootDirection.y = 0;
+                _rb.AddForce(Vector3.up * Mathf.Clamp(_maxRecoilFallSpeed + downVel, 0, _maxRecoilFallSpeed), ForceMode2D.Impulse);
+            }
+
+            _rb.AddForce(shootDirection * (_canonShootRecoil + addedForce), ForceMode2D.Impulse);
+
+            if (_bullet)
+            {
+                Rigidbody2D bRb = Instantiate(_bullet, _endCanon.position, _endCanon.rotation).GetComponent<Rigidbody2D>();
+                bRb.AddForce(_canonShootForce * _lastJoystickValue.normalized, ForceMode2D.Impulse);
+            }
+            else Debug.LogWarning("No bullet on playercontroller");
+
+            if (_shootParticle) Destroy(Instantiate(_shootParticle, _endCanon.position, Quaternion.Inverse(_canonPivot.rotation)), 5);
+            else Debug.LogWarning("No shootParticle on playercontroller");
+
+            if (_shootLightExplosion) Instantiate(_shootLightExplosion, _endCanon.position, Quaternion.identity);
+            else Debug.LogWarning("No shootLightExplosion on playercontroller");
         }
-
-        float downVel = Vector3.Dot(Vector3.down, _rb.velocity);
-        float nextDownVel = downVel + (Vector3.Dot(shootDirection * _canonShootRecoil, Vector3.down));
-        if (nextDownVel > _maxRecoilFallSpeed)
-        {
-            shootDirection.y = 0;
-            _rb.AddForce(Vector3.down * Mathf.Clamp(_maxRecoilFallSpeed - downVel, 0, _maxRecoilFallSpeed), ForceMode2D.Impulse);
-        }
-        else if (nextDownVel < -_maxRecoilFallSpeed)
-        {
-            shootDirection.y = 0;
-            _rb.AddForce(Vector3.up * Mathf.Clamp(_maxRecoilFallSpeed + downVel, 0, _maxRecoilFallSpeed), ForceMode2D.Impulse);
-        }
-
-        _rb.AddForce(shootDirection * (_canonShootRecoil + addedForce), ForceMode2D.Impulse);
-
-        if (_bullet)
-        {
-            Rigidbody2D bRb = Instantiate(_bullet, _endCanon.position, _endCanon.rotation).GetComponent<Rigidbody2D>();
-            bRb.AddForce(_canonShootForce * _lastJoystickValue.normalized, ForceMode2D.Impulse);
-        }
-        else Debug.LogWarning("No bullet on playercontroller");
-
-        if (_shootParticle) Destroy(Instantiate(_shootParticle, _endCanon.position, Quaternion.Inverse(_canonPivot.rotation)), 5);
-        else Debug.LogWarning("No shootParticle on playercontroller");
-
-        if (_shootLightExplosion) Instantiate(_shootLightExplosion, _endCanon.position, Quaternion.identity);
-        else Debug.LogWarning("No shootLightExplosion on playercontroller");
     }
 
     private void DownTouched() //not used
@@ -154,7 +161,7 @@ public class PlayerController : MonoBehaviour
 
     public bool IsUnderSpeedThreshold()
     {
-        return -_rb.velocity.y < _fallSpeedDeathThreshold;
+        return -_rb.velocity.y < DeathWallScript.Instance.FallSpeedDeathThreshold;
     }
 
     private void OnParticleCollision(GameObject other)
