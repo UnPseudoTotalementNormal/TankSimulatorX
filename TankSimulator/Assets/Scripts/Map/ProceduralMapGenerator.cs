@@ -96,7 +96,7 @@ public class ProceduralMapGenerator : MonoBehaviour
             GeneratePlatforms(false);
             DestroyFarObjects();
         }
-        Invoke("CheckPlayerPosForGen", 0.25f);
+        Invoke("CheckPlayerPosForGen", 0.02f);
     }
 
     private void GenerateEnemy(Vector3Int spawnPos)

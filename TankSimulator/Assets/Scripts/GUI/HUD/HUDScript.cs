@@ -23,7 +23,7 @@ public class HUDScript : MonoBehaviour
 
     private void Update()
     {
-        _coinText.text = "Coins: " + GameManager.Instance.Coins.ToString();
+        _coinText.text = ": " + GameManager.Instance.Coins.ToString();
     }
 
     private void OnGameEnded()
