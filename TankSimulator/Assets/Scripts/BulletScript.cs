@@ -8,6 +8,8 @@ public class BulletScript : MonoBehaviour
     [SerializeField] private GameObject _deathParticle;
     [SerializeField] private GameObject _lightExplosion;
 
+    private bool _dead = false;
+
     private void Awake()
     {
         Destroy(gameObject, _timeBeforeDestroy);
@@ -15,23 +17,31 @@ public class BulletScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Transform collParent = collision.transform.parent;
-        if (collParent && collParent.CompareTag("Breakable"))
+        
+        foreach (Collider2D collider in Physics2D.OverlapCircleAll(transform.position, 1.5f))
         {
-            if (collParent.TryGetComponent<BreakableBlocScript>(out BreakableBlocScript breakableBlocScript))
-                breakableBlocScript.Death();
+            Transform collParent = collider.transform.parent;
+            if (collParent && collParent.CompareTag("Breakable"))
+            {
+                if (collParent.TryGetComponent<BreakableBlocScript>(out BreakableBlocScript breakableBlocScript))
+                    breakableBlocScript.Death();
+                Destroy(collParent.gameObject);
 
-            Destroy(collParent.gameObject);
-            Death();
+                
+            }
         }
+        Death();
     }
 
     public void Death()
     {
-        if (_deathParticle) Destroy(Instantiate(_deathParticle, transform.position, Quaternion.identity), 5);
+        if (!_dead)
+        {
+            if (_deathParticle) Destroy(Instantiate(_deathParticle, transform.position, Quaternion.identity), 5);
 
-        if (_lightExplosion) Instantiate(_lightExplosion, transform.position, Quaternion.identity);
+            if (_lightExplosion) Instantiate(_lightExplosion, transform.position, Quaternion.identity);
 
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
     }
 }

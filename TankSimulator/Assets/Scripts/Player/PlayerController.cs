@@ -70,6 +70,10 @@ public class PlayerController : MonoBehaviour
                 Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, 4 * Time.timeScale);
             }
         }
+        else
+        {
+            _rb.gravityScale = 0;
+        }
     }
 
     private void FixedUpdate()

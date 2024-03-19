@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     [SerializeField] private bool _gameStarted = true; public bool GameStarted { get { return _gameStarted; } }
 
-    public float Coins = 0;
+    public int Coins = 0;
     private bool _gameEnded = false; public bool GameEnded { get { return _gameEnded; } }
 
     public UnityEvent GameEndedEvent;
@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        Coins = PlayerPrefs.GetInt("Coins", 0);
     }
 
     private void Update()
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
             _gameEnded = true;
             GameEndedEvent?.Invoke();
             Invoke("ReloadGame", 3);
+            PlayerPrefs.SetInt("Coins", Coins);
         }
     }
 

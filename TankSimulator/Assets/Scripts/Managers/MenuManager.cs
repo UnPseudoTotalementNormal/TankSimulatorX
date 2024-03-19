@@ -1,10 +1,13 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] private Image _fadeImage;
+
+    [SerializeField] private TextMeshProUGUI _textCoins;
 
     private void Awake()
     {
@@ -16,6 +19,8 @@ public class MenuManager : MonoBehaviour
         InputManager.Instance.ReleaseClickEvent.AddListener(TryStartGame);
 
         StartCoroutine(FadeIn());
+
+        _textCoins.text = ": " + GameManager.Instance.Coins.ToString();
     }   
 
     private void TryStartGame()
