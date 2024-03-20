@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
             GameEndedEvent?.Invoke();
             Invoke("ReloadGame", 3);
             PlayerPrefs.SetInt("Coins", Coins);
+            if ((int)-PlayerController.Instance.transform.position.y > PlayerPrefs.GetInt("MaxDistance", 0))  PlayerPrefs.SetInt("MaxDistance", (int)-PlayerController.Instance.transform.position.y);
         }
     }
 

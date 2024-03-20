@@ -6,6 +6,7 @@ public class ProceduralMapGenerator : MonoBehaviour
     [SerializeField] private Transform _player;
     [SerializeField] private GameObject _sideBlock;
     [SerializeField] private GameObject _breakableBlock;
+    [SerializeField] private GameObject _PbLine;
     [SerializeField] private float _wallsNumber = 10;
     [SerializeField] private float _levelSize = 1000;
     [SerializeField] private int _firstSpawnHeightOffset = -10;
@@ -29,6 +30,12 @@ public class ProceduralMapGenerator : MonoBehaviour
         GenerateSideWalls();
         GeneratePlatforms(true);
         CheckPlayerPosForGen();
+        GameManager.Instance.GameStartedEvent?.AddListener(SpawnPBLine);
+    }
+
+    private void SpawnPBLine()
+    {
+        Instantiate(_PbLine, new Vector3(0, -PlayerPrefs.GetInt("MaxDistance", 100), _PbLine.transform.position.z), Quaternion.identity);
     }
 
     private void GenerateSideWalls()

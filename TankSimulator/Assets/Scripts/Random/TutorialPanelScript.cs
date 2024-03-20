@@ -11,6 +11,9 @@ public class TutorialPanelScript : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-        PlayerPrefs.SetInt("tutoHide", 1);
+        else
+        {
+            PlayerPrefs.SetInt("tutoHide", 1);
+        }
     }
 }

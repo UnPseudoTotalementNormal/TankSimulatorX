@@ -8,6 +8,7 @@ public class HUDScript : MonoBehaviour
     public static HUDScript Instance;
 
     [SerializeField] private TextMeshProUGUI _coinText;
+    [SerializeField] private TextMeshProUGUI _fallDistanceText;
 
     [SerializeField] private Image _fadeImage;
 
@@ -24,6 +25,7 @@ public class HUDScript : MonoBehaviour
     private void Update()
     {
         _coinText.text = ": " + GameManager.Instance.Coins.ToString();
+        _fallDistanceText.text = ((int)-PlayerController.Instance.transform.position.y).ToString() + 'm';
     }
 
     private void OnGameEnded()

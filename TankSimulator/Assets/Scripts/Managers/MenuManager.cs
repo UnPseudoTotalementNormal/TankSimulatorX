@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Image _fadeImage;
 
     [SerializeField] private TextMeshProUGUI _textCoins;
+    [SerializeField] private TextMeshProUGUI _textPbDistance;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class MenuManager : MonoBehaviour
         StartCoroutine(FadeIn());
 
         _textCoins.text = ": " + GameManager.Instance.Coins.ToString();
+        _textPbDistance.text = "PB: " + PlayerPrefs.GetInt("MaxDistance", 0) + 'm';
     }   
 
     private void TryStartGame()
