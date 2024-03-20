@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +7,10 @@ public class PlayerWorldCanvas : MonoBehaviour
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private TextMeshProUGUI _fallSpeedText;
 
+    [SerializeField] private GameObject _dangerIcon;
+    [SerializeField] private float _dangerDelay = 0;
+    private float _dangerTime = 0;
+
     private void Start()
     {
         _playerController = PlayerController.Instance;
@@ -18,6 +19,20 @@ public class PlayerWorldCanvas : MonoBehaviour
     private void Update()
     {
         FallSpeedUpdate();
+
+        _dangerTime += Time.deltaTime;
+        if (DeathWallScript.Instance.TimeBeforeDeath < 1.5f && DeathWallScript.Instance.TimeBeforeDeath > 0)
+        {
+            if (_dangerTime >= _dangerDelay)
+            {
+                _dangerIcon.SetActive(!_dangerIcon.activeSelf);
+                _dangerTime = 0;
+            }
+        }
+        else
+        {
+            _dangerIcon.SetActive(false);
+        }
     }
 
     private void FallSpeedUpdate()
