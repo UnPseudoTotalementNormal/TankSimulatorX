@@ -149,6 +149,8 @@ public class PlayerController : MonoBehaviour
 
             if (_shootLightExplosion) Instantiate(_shootLightExplosion, _endCanon.position, Quaternion.identity);
             else Debug.LogWarning("No shootLightExplosion on playercontroller");
+
+            SoundManager.Instance.PlayAtPath("SFX/Canon", 0.05f, 0.15f);
         }
     }
 
@@ -173,5 +175,8 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.Coins += 1;
 
         if (_particleLightExplosion) Instantiate(_particleLightExplosion, transform.position, Quaternion.identity);
+
+        if (Random.Range(1, 101) < 50)
+            SoundManager.Instance.PlayAtPath("SFX/Coin1", 0.75f);
     }
 }

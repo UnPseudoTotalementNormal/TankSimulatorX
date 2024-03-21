@@ -16,5 +16,7 @@ public class BreakableBlocScript : MonoBehaviour
         }
 
         Destroy(gameObject);
+
+        SoundManager.Instance.PlayAtPath("SFX/RockDestroy", 0.1f, 0.15f);
     }
 }
