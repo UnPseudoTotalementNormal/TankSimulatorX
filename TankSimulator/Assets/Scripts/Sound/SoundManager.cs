@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -26,6 +27,7 @@ public class SoundManager : MonoBehaviour
     {
         GameObject newObject = new GameObject();
         AudioSource audioSource = newObject.AddComponent<AudioSource>();
+        newObject.AddComponent<CustomAudioSourceScript>();
         audioSource.clip = newCustomSound.AudioClip;
         audioSource.loop = newCustomSound.b_IsLoop;
         audioSource.volume = newCustomSound.Volume;
