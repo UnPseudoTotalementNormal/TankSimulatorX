@@ -1,18 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WindSFXScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private float _minVolume;
+    [SerializeField] private float _maxVolume;
+
+    [SerializeField] private float _minSpeedVolume;
+    [SerializeField] private float _maxSpeedVolume;
+
+    private Rigidbody2D _playerRb;
+    private AudioSource _audioSource;
+
+    private void Start()
     {
-        
+        _audioSource = GetComponent<AudioSource>();
+        _playerRb = PlayerController.Instance.GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (_playerRb != null && _audioSource != null)
+        {
+            float speed = _playerRb.velocity.magnitude;
+            float volume = Mathf.Lerp(_minVolume, _maxVolume, Mathf.InverseLerp(_minSpeedVolume, _maxSpeedVolume, speed));
+
+            _audioSource.volume = Mathf.Lerp(_audioSource.volume, volume, 3 * Time.unscaledDeltaTime);
+        }
     }
 }

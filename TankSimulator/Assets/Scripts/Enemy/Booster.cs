@@ -24,7 +24,7 @@ public class Booster : Enemy
         {
             colliderObject.GetComponent<Rigidbody2D>().AddForce(Vector3.down * _pushPlayerForce, ForceMode2D.Impulse);
             Death();
-            SoundManager.Instance.PlayAtPath("SFX/SpeedBoost", 0.35f);
+            SoundManager.Instance.PlayAtPath("SFX/SpeedBoost", 0.1f);
             HapticFeedback.MediumFeedback();
         }
     }

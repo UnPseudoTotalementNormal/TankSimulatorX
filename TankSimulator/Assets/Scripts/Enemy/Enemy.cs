@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
         if (_deathParticles) Destroy(Instantiate(_deathParticles, _visuals.transform.position, Quaternion.identity), 10);
         if (_deathLightExplosion) Instantiate(_deathLightExplosion, _visuals.transform.position, Quaternion.identity);
 
-        SoundManager.Instance.PlayAtPath("SFX/Explosion1", 0.3f, 0.15f);
+        SoundManager.Instance.PlayAtPath("SFX/Explosion1", 0.1f, 0.15f);
 
         Destroy(gameObject);
     }

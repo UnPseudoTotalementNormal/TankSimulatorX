@@ -177,6 +177,6 @@ public class PlayerController : MonoBehaviour
         if (_particleLightExplosion) Instantiate(_particleLightExplosion, transform.position, Quaternion.identity);
 
         if (Random.Range(1, 101) < 50)
-            SoundManager.Instance.PlayAtPath("SFX/Coin1", 0.75f);
+            SoundManager.Instance.PlayAtPath("SFX/Coin1", 0.7f);
     }
 }
